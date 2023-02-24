@@ -30,7 +30,7 @@ var currentDayElem = $('#currentDay');
   {"time": 9, "desc": "do dishes"},
   {"time": 9, "desc": "clean mat"},
   {"time": 10, "desc": "free time"},
-  {"time": 11, "desc": "goto bed"},
+  {"time": 11, "desc": "go to bed"},
 ];
 
 
@@ -101,11 +101,12 @@ function displayPlanner (planner) {
     console.log("textAreaElem.val() =", textAreaElem.val());
     let prevActs = textAreaElem.val();
     console.log("prevActs:", prevActs);
-    if (prevActs) {
-      actDesc = (prevActs + "\n" + actDesc);
-      console.log ("acts combined into:", prevActs);
+   if (prevActs.length !== " " ) {
+      console.log("prevActs length is",prevActs.length);
+      actDesc = (prevActs + actDesc);
+      console.log ("acts combined into:", actDesc);
     }
-    textAreaElem.val(actDesc);
+    textAreaElem.val(actDesc+"\n");
     
 
   });
