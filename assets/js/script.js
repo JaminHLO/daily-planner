@@ -26,28 +26,49 @@ $(function () {
 var currentDayElem = $('#currentDay');
 // var dailyPlannerElem = $('#daily-planner');
 
- var tmpActivitiesArray = [
+var tmpActivitiesArray = [
   {"time": 9, "desc": "do dishes"},
   {"time": 9, "desc": "clean mat"},
   {"time": 10, "desc": "free time"},
   {"time": 11, "desc": "go to bed"},
 ];
 
-
+//save the current textarea, replacing the old
 $(document).on('click', '.saveBtn', function () {
-  console.log("textarea says", $(this).prev(".description").val());
- // replace function () with a function call
+  // this.preventDefault(); //maybe
+  var curHour = $(this).parent().attr("id");
+  console.log("pre-slice parent is:", curHour);
+  curHour = curHour.slice(5); // removing leading "hour-"
+  console.log("post-slice parent is:", curHour);
+  var curNumHour = +curHour; //convert string to number
 
+  var curTextArea = $(this).prev(".description").val().trim();
+  console.log("textarea says:\n"+ curTextArea);
+  //load current act array
+  var actArray = loadPlanner();
+  //remove previous entry for this hour from array
+  $.each(actArray, function(index, activity) {
+    if (activity.time === curNumHour) {
+      var tmpRemoved = actArray.splice(index);
+      console.log("we removed", tmpRemoved);
+    }
+  });
+  //create new object
+  var newActObj = {"time": curNumHour,"desc": curTextArea};
+  console.log("new object is:", newActObj);
+  //push new hour object onto activity array
+  actArray.push(newActObj);
+  
+  //save planner array to localStorage
+  localStorage.setItem("daily-planner", JSON.stringify(actArray));
+  // savePlanner(actArray); 
 });
 
 
-//save planner entry
-function savePlanner (event) {
-  event.preventDefault ();
-  // read input from description text area
-  var entryText = event; //
-  console.log("$(this.target).val()", $(this.target).val());
-}
+// //save planner array to localStorage
+// function savePlanner (actArray) {
+//   localStorage.setItem("daily-planner", JSON.stringify(actArray));
+// }
 
 //colorize the planner
 function colorizePlanner () {
@@ -56,9 +77,9 @@ function colorizePlanner () {
   "hour-13","hour-14","hour-15","hour-16","hour-17"]; 
 
   $.each(workHoursArray, function(index, hour) {
-    var curPlannerElem = $("#"+`${hour}`);
-    // var curHour =  dayjs().format('H'); //correct code
-    var curHour = 12; // temp for testing setting time to noon
+    let curPlannerElem = $("#"+`${hour}`);
+    var curHour =  dayjs().format('H'); //correct code
+    // let curHour = 12; // temp for testing setting time to noon
 
     console.log("at", `${index}`, "the id is", "#"+`${hour}`);
     console.log("the hour is", curHour);
@@ -83,12 +104,12 @@ function colorizePlanner () {
 function displayPlanner (planner) {
   //colorize based on time of day  
   colorizePlanner();
-  planner = tmpActivitiesArray; // tmp artifical stored activities
+  // planner = tmpActivitiesArray; // tmp artifical stored activities
   console.log("displayplanner planner contains:", planner);
 
   //if planner has content for this hour, load into textarea
   $.each(planner, function(index, entry) {
-    var curPlan = entry;
+    let curPlan = entry;
     let actTime = curPlan.time;
     let actDesc = curPlan.desc;
     console.log("curPlan:", curPlan);
@@ -101,10 +122,12 @@ function displayPlanner (planner) {
     console.log("textAreaElem.val() =", textAreaElem.val());
     let prevActs = textAreaElem.val();
     console.log("prevActs:", prevActs);
-   if (prevActs.length !== " " ) {
-      console.log("prevActs length is",prevActs.length);
-      actDesc = (prevActs + actDesc);
-      console.log ("acts combined into:", actDesc);
+    if (prevActs) {
+      if (prevActs.length !== " " ) {
+        console.log("prevActs length is",prevActs.length);
+        actDesc = (prevActs + actDesc);
+        console.log ("acts combined into:", actDesc);
+      }
     }
     textAreaElem.val(actDesc+"\n");
     
@@ -118,6 +141,7 @@ function loadPlanner () {
   var dailyPlanner = localStorage.getItem('daily-planner');
   if (dailyPlanner) {
     dailyPlanner = JSON.parse(dailyPlanner);
+    console.log("loadplanner: daily-planner contains:", dailyPlanner);
   }
   else {
     dailyPlanner = [];
