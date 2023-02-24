@@ -1,8 +1,6 @@
 // Wrap all code that interacts with the DOM in a call to jQuery to ensure that
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
-var currentDayElem = $('#currentDay');
-// var dailyPlannerElem = $('#daily-planner');
 
 $(function () {
   // TODO: Add a listener for click events on the save button. This code should
@@ -25,13 +23,43 @@ $(function () {
   // TODO: Add code to display the current date in the header of the page.
 });
 
-//display current state of planner
-function displayPlanner (plannerEntries) {
-  const workHoursArray = ["hour-9", "hour-10","hour-11","hour-12","hour-13","hour-14","hour-15","hour-16","hour-17"];
+var currentDayElem = $('#currentDay');
+// var dailyPlannerElem = $('#daily-planner');
+
+ var tmpActivitiesArray = [
+  {"time": 9, "desc": "do dishes"},
+  {"time": 9, "desc": "clean mat"},
+  {"time": 10, "desc": "free time"},
+  {"time": 11, "desc": "goto bed"},
+];
+
+
+$(document).on('click', '.saveBtn', function () {
+  console.log("textarea says", $(this).prev(".description").val());
+ // replace function () with a function call
+
+});
+
+
+//save planner entry
+function savePlanner (event) {
+  event.preventDefault ();
+  // read input from description text area
+  var entryText = event; //
+  console.log("$(this.target).val()", $(this.target).val());
+}
+
+//colorize the planner
+function colorizePlanner () {
+  //set work hours
+  const workHoursArray = ["hour-9", "hour-10","hour-11","hour-12",
+  "hour-13","hour-14","hour-15","hour-16","hour-17"]; 
+
   $.each(workHoursArray, function(index, hour) {
     var curPlannerElem = $("#"+`${hour}`);
-    // var curHour =  dayjs().format('H');
-    var curHour = 12;
+    // var curHour =  dayjs().format('H'); //correct code
+    var curHour = 12; // temp for testing setting time to noon
+
     console.log("at", `${index}`, "the id is", "#"+`${hour}`);
     console.log("the hour is", curHour);
     if ((curHour-9) < `${index}`) {
@@ -47,12 +75,45 @@ function displayPlanner (plannerEntries) {
       curPlannerElem.removeClass();
       curPlannerElem.addClass('row time-block future');
     }
-    //if plannerEntries has content for this hour, load into textarea
+
   });
 }
 
+//display current state of planner
+function displayPlanner (planner) {
+  //colorize based on time of day  
+  colorizePlanner();
+  planner = tmpActivitiesArray; // tmp artifical stored activities
+  console.log("displayplanner planner contains:", planner);
+
+  //if planner has content for this hour, load into textarea
+  $.each(planner, function(index, entry) {
+    var curPlan = entry;
+    let actTime = curPlan.time;
+    let actDesc = curPlan.desc;
+    console.log("curPlan:", curPlan);
+    console.log("actTime:", actTime);
+    console.log("actDesc:", actDesc);
+    console.log("#hour-"+`${actTime}`);
+    // let hour = "#hour-"+`${actTime}`;
+    let hourDiv = $("#hour-"+`${actTime}`);
+    let textAreaElem = hourDiv.children(".description")
+    console.log("textAreaElem.val() =", textAreaElem.val());
+    let prevActs = textAreaElem.val();
+    console.log("prevActs:", prevActs);
+    if (prevActs) {
+      actDesc = (prevActs + "\n" + actDesc);
+      console.log ("acts combined into:", prevActs);
+    }
+    textAreaElem.val(actDesc);
+    
+
+  });
+
+}
+
 //load planner entries
-function loadPlannerEntries () {
+function loadPlanner () {
   var dailyPlanner = localStorage.getItem('daily-planner');
   if (dailyPlanner) {
     dailyPlanner = JSON.parse(dailyPlanner);
@@ -67,15 +128,14 @@ function loadPlannerEntries () {
 function init () {
   //do stuff
   console.log("inside init");
+  
   //set current day
-  // const advancedFormat = require('dayjs/plugin/advancedFormat');
-  // dayjs.extend(advancedFormat);
-  let currentTime = dayjs().format('dddd, MMMM Do');
+  let currentTime = dayjs().format('dddd, MMMM D, YYYY');
   console.log(currentTime);
   currentDayElem.text(currentTime);
 
   //load entries and return daily planner
-  var plannerEntries = loadPlannerEntries ();
+  var plannerEntries = loadPlanner ();
   displayPlanner(plannerEntries);
 
 }
