@@ -15,7 +15,7 @@ The site is accessable here: <https://jaminhlo.github.io/daily-planner/>
 
 ## Credits
 
-Starter code was provided by:
+Starter code was provided by: <br>
 George Yoo: https://github.com/Georgeyoo <br>
 Matt Fyke: https://github.com/mfyke <br>
 Courtney Mathena: https://github.com/cmathena2u
