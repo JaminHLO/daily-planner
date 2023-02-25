@@ -16,8 +16,8 @@ The site is accessable here: <https://jaminhlo.github.io/daily-planner/>
 ## Credits
 
 Starter code was provided by:
-George Yoo: https://github.com/Georgeyoo @mfyke
-Matt Fyke: https://github.com/mfyke
+George Yoo: https://github.com/Georgeyoo <br>
+Matt Fyke: https://github.com/mfyke <br>
 Courtney Mathena: https://github.com/cmathena2u
 
 Instruction was provided by Instructor Saurav with assistance from TAs Andreas #1, Andreas #2, Constan, and Morgan. Special shout out to Andreas who helped me get stared when I was having a problem with dayjs.
