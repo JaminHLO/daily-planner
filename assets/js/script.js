@@ -30,31 +30,24 @@ $(document).on('click', '.saveBtn', function () {
   localStorage.setItem("daily-planner", JSON.stringify(newArray));
 });
 
-
-
 //colorize the planner - wrapped in jQuery call
 $(function colorizePlanner () {
   //set work hours
   const workHoursArray = ["hour-9", "hour-10","hour-11","hour-12",
   "hour-13","hour-14","hour-15","hour-16","hour-17"]; 
-
+  //go through work hour, colorizing based on current time
   $.each(workHoursArray, function(index, hour) {
     let curPlannerElem = $("#"+`${hour}`);
     var curHour =  dayjs().format('H'); //correct code
     // let curHour = 12; // temp for testing setting time to noon
 
-    // console.log("at", `${index}`, "the id is", "#"+`${hour}`);
-    // console.log("the hour is", curHour);
     if ((curHour-9) < `${index}`) {
-      // console.log("hasn't happened yet");
       curPlannerElem.removeClass();
       curPlannerElem.addClass('row time-block past');
     } else if ((curHour-9) == `${index}`) {
-      // console.log("happening now");
       curPlannerElem.removeClass();
       curPlannerElem.addClass('row time-block present');
     } else {
-      // console.log ("happening in future");
       curPlannerElem.removeClass();
       curPlannerElem.addClass('row time-block future');
     }
@@ -62,30 +55,24 @@ $(function colorizePlanner () {
 });
 
 //display current state of planner
-  function displayPlanner (planner) {
-
+function displayPlanner (planner) {
   //if planner has content for this hour, load into textarea
   $.each(planner, function(index, entry) {
     let curPlan = entry;
     let actTime = curPlan.time;
     let actDesc = curPlan.desc;
     let hourDiv = $("#hour-"+`${actTime}`);
-    let textAreaElem = hourDiv.children(".description")
-    // console.log("textAreaElem.val() =", textAreaElem.val());
+    let textAreaElem = hourDiv.children(".description");
     let prevActs = textAreaElem.val();
-    // console.log("prevActs:", prevActs);
+    //if we have previous activities for this hour, make sure they 
+    //arent just whitespace, then combine
     if (prevActs) {
       if (prevActs.length !== " " ) {
-        // console.log("prevActs length is",prevActs.length);
         actDesc = (prevActs + actDesc);
-        // console.log ("acts combined into:", actDesc);
       }
     }
     textAreaElem.val(actDesc+"\n");
-    
-
   });
-
 };
 
 //load planner entries
@@ -104,16 +91,14 @@ function loadPlanner () {
 }
 
 function init () {
-
   //set current day
   let currentTime = dayjs().format('dddd, MMMM D, YYYY');
   // console.log(currentTime);
   currentDayElem.text(currentTime);
 
   //load entries and return daily planner
-  var plannerEntries = loadPlanner ();
+  var plannerEntries = loadPlanner();
   displayPlanner(plannerEntries);
-
 }
 
 init ();
