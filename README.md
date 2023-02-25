@@ -10,11 +10,8 @@ This website has been tested to be functional on Chrome, MS Edge, Brave, Samsung
 
 The site is accessable here: <https://jaminhlo.github.io/daily-planner/>
 
-<sup>(left) Screenshot of Intro and Rules of Coding Game.  (right) Game in progress with badges accumulating as time counter turns red</sup><br>
-<img src=https://raw.githubusercontent.com/JaminHLO/coding-quiz/main/assets/images/cq-ss01.jpg height="250" alt="nav bar and intro of my coding game"> <img src=https://raw.githubusercontent.com/JaminHLO/coding-quiz/main/assets/images/cq-ss02.jpg height="250" alt="game in progress">
-
-<sup>(left) User's score is presented with prompt for their initials.  (right) top scores display screen with previous scores from localStorage</sup><br>
-<img src=https://raw.githubusercontent.com/JaminHLO/coding-quiz/main/assets/images/cq-ss03.jpg height="250" alt="game over screen"> <img src=https://raw.githubusercontent.com/JaminHLO/coding-quiz/main/assets/images/cq-ss04.jpg height="250" alt="high score listing"> 
+![daily planner at noon](assets/images/dp-ss03.jpg)
+![planner on mobile](assets/images/dp-ss04.jpg)
 
 ## Credits
 
